@@ -1,0 +1,10 @@
+{
+  "id": "poker",
+  "name": "Jarvis Poker",
+  "category": "games",
+  "status": { "prod": "live", "dev": "live" },
+  "deploy": {
+    "prod": { "url": "https://poker.dabrewer.dev/" },
+    "dev": { "url": "https://poker.dabrewer.dev/dev/" }
+  }
+}

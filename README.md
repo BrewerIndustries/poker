@@ -1,0 +1,71 @@
+# Jarvis Poker
+
+An old-school casino bar-top **video poker** machine in your browser — classic
+*Jacks or Better* (9/6), hold and draw, a lit paytable, 7-segment credit/bet/win
+meters, the iconic **Double-Up** gamble, and a glowing CRT cabinet.
+
+Play it: **[poker.dabrewer.dev](https://poker.dabrewer.dev/)** · dev build at
+[poker.dabrewer.dev/dev/](https://poker.dabrewer.dev/dev/)
+
+## How to play
+
+1. Set your wager with **BET ONE** (cycles 1→5) or **MAX BET** (5 coins, deals at once).
+2. Press **DEAL** for five cards.
+3. Click any cards to **HOLD** them (a gold lamp lights above each held card).
+4. Press **DRAW** to replace the rest. Make a paying hand and you win.
+5. On a win, **TAKE WIN** to bank it — or **DOUBLE UP** to gamble: pick a card
+   higher than the dealer's to double your winnings (tie pushes, lower loses it all).
+   Repeat as far as your nerve holds.
+6. **CASH OUT** banks your credits.
+
+Keyboard: `1`–`5` hold a card · `Enter`/`Space` deal / draw / take · `D` double up · `M` mute.
+
+## Paytable (9/6 Jacks or Better)
+
+| Hand | Per coin |
+| --- | --- |
+| Royal Flush | 250 ( **4000** at max bet ) |
+| Straight Flush | 50 |
+| Four of a Kind | 25 |
+| Full House | 9 |
+| Flush | 6 |
+| Straight | 4 |
+| Three of a Kind | 3 |
+| Two Pair | 2 |
+| Jacks or Better | 1 |
+
+## Tech
+
+- Single-file `index.html` — vanilla JS + CSS, **no framework, no build step**. Open it and it runs.
+- Web Audio API for synthesized SFX (no asset files); `localStorage` for credits + stats.
+- Deployed via **GitHub Pages** with a dev→prod pipeline: `main` → `/`, `dev` → `/dev/`
+  (see `.github/workflows/pages.yml`).
+- Registered in the Jarvis **Launcher** and **Dashboard** via the committed `.jarvis.json`.
+
+## Develop
+
+```bash
+python3 -m http.server 3000   # then open http://localhost:3000
+```
+
+`dev` is the working branch (auto-deploys to `/dev/`); `main` is production and is
+updated only via an approved PR.
+
+## Changelog
+
+### v0.1 — *Cold Open*
+- Jacks or Better video poker: shuffle, deal, hold, draw, 9/6 paytable + hand evaluator
+- Bet 1–5 with the classic max-bet Royal Flush jackpot (4000)
+- Double-Up bonus (beat the dealer's card to double; tie pushes)
+- CRT cabinet: neon marquee, lit paytable with the active bet column highlighted,
+  card-back/flip animation, 7-segment CREDITS / BET / WIN meters, blinking messages
+- Synthesized Web Audio SFX (coin, deal, hold, draw, win jingle, double-up) + mute
+- `localStorage` save (credits, hands played, biggest win); responsive / mobile layout
+
+## Backlog
+
+- More variants (Deuces Wild, Bonus Poker, Double Double Bonus) via a game-select menu
+- Multi-hand (Triple / Five Play) draw
+- "Optimal hold" hint / trainer mode
+- Payout history + session stats panel
+- Coin-drop and cabinet ambience audio polish
