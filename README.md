@@ -1,8 +1,9 @@
 # Jarvis Poker
 
-An old-school casino bar-top **video poker** machine in your browser — classic
-*Jacks or Better* (9/6), hold and draw, a lit paytable, 7-segment credit/bet/win
-meters, the iconic **Double-Up** gamble, and a glowing CRT cabinet.
+An old-school casino bar-top **video poker** machine in your browser — IGT "Game King"
+style, with **five classic variants** (Jacks or Better, Bonus, Double Bonus, Double Double
+Bonus, Deuces Wild), hold and draw, lit paytables, a denomination badge with cash value, the
+iconic **Double-Up** gamble, a jackpot coin shower, and a glowing CRT cabinet.
 
 Play it: **[poker.dabrewer.dev](https://poker.dabrewer.dev/)** · dev build at
 [poker.dabrewer.dev/dev/](https://poker.dabrewer.dev/dev/)
@@ -52,6 +53,16 @@ python3 -m http.server 3000   # then open http://localhost:3000
 updated only via an approved PR.
 
 ## Changelog
+
+### v0.4 — *Game King Lineup*
+- **Five selectable games** (OPTIONS → Game): Jacks or Better, Bonus Poker, Double Bonus,
+  **Double Double Bonus** (four-of-a-kind kicker tiers), and **Deuces Wild** (every 2 is wild)
+- Per-game paytables + correct evaluation — bonus quad-by-rank tiers, DDB kicker logic, and a
+  full wild-card evaluator (natural/wild royal, five of a kind, four deuces). Pay tables match
+  [Wizard of Odds](https://wizardofodds.com/games/video-poker/) (9/6 JoB, 8/5 Bonus, 10/7 Double
+  Bonus, 9/6 DDB, full-pay Deuces)
+- **Denomination-aware WIN meter** — WIN now shows its cash value alongside CREDITS
+- Deuces render as gold **WILD** cards; the marquee ribbon shows the active game
 
 ### v0.3 — *Max Theming*
 - Crowned marquee + gold cabinet with corner screws and a chrome screen frame
