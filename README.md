@@ -53,6 +53,14 @@ updated only via an approved PR.
 
 ## Changelog
 
+### v0.3 — *Max Theming*
+- Crowned marquee + gold cabinet with corner screws and a chrome screen frame
+- **Denomination badge** (1¢ – $5) with a live **cash-value** readout under credits
+- **MENU** (rules) and **OPTIONS** (sound · speed · denomination · reset bankroll / clear
+  stats) overlays; **SPEED** control (Slow → Turbo) that scales every animation
+- Jackpot celebration — screen flash + gold **coin shower**, animated win/credit count-ups,
+  and a special Royal Flush jackpot banner
+
 ### v0.2 — *Game King*
 - Reskinned to the classic IGT **Game King** look: royal-blue field, gold cabinet
   bezel + button rail, and a marquee topper
