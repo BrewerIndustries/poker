@@ -3,359 +3,361 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta name="theme-color" content="#0a0a12" />
+<meta name="theme-color" content="#0a1840" />
 <title>Jarvis Poker — Video Poker</title>
 <meta name="description" content="Old-school Jacks or Better video poker — the casino bar-top machine." />
 <style>
   /* ====================================================================
      JARVIS POKER — a single-file, no-build video poker cabinet.
-     Palette + layout in CSS vars; everything else painted by index.html's
-     inline script. Mirrors the "single-file HTML, no build step" house
-     style of the other Jarvis games (Stellar Ascent, Space Base Race).
+     Styled after the classic IGT "Game King" bar-top machine: royal-blue
+     field, yellow paytable with a red max-bet column, court-card art, and
+     a gold button rail. Single-file HTML, no build step.
      ==================================================================== */
   :root {
-    --bg: #07070d;
-    --room: #0d0d18;
-    --cabinet: #14141f;
-    --cabinet-edge: #2a2a3d;
-    --screen: #050912;
-    --felt: #0a3a2a;
-    --felt-line: #0f5a40;
-    --amber: #ffb000;
-    --amber-glow: #ff8a00;
-    --led-red: #ff2d2d;
-    --led-blue: #38b6ff;
-    --pay-name: #ffd23f;
-    --pay-amt: #ffffff;
-    --pay-hi-bg: #b00018;
-    --pay-hi-text: #fff36b;
-    --card-red: #d8202a;
-    --card-black: #14141f;
-    --btn-deal: #d8202a;
-    --btn-hold: #ffc21c;
-    --btn-bet: #2c9e4b;
-    --btn-double: #ff7a18;
-    --btn-take: #2f8fff;
-    --neon: #ff4fd8;
-    --neon2: #4fe3ff;
-    --text: #e7e7f5;
-    --muted: #8b8ba8;
+    --room: #050d24;          /* dark blue room behind the cabinet */
+    --bezel: #d8a83e;          /* gold cabinet bezel */
+    --bezel-2: #8a6014;
+    --screen: #1a3fb0;         /* IGT royal-blue field */
+    --screen-2: #102f8e;
+    --pt-line: rgba(150,180,255,.45);
+    --yellow: #ffd21a;         /* paytable / win / credits */
+    --yellow-soft: #ffe680;
+    --red: #d80f1f;            /* active bet column + jackpot */
+    --red-2: #ff3242;
+    --white: #f4f7ff;
+    --card-red: #d4202a;
+    --card-black: #16181f;
+    --gold: #ffce3a;           /* buttons */
+    --gold-2: #e09c00;
+    --gold-ink: #3a2700;
+    --muted: #aebbe6;
   }
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { height: 100%; margin: 0; }
   body {
-    background:
-      radial-gradient(120% 90% at 50% -10%, #1a1a2e 0%, var(--room) 45%, var(--bg) 100%);
-    color: var(--text);
-    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    background: radial-gradient(130% 100% at 50% -10%, #14224e 0%, var(--room) 55%, #02060f 100%);
+    color: var(--white);
+    font-family: "Arial Narrow", "Segoe UI", system-ui, -apple-system, sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100%;
-    padding: 18px;
+    padding: 16px;
     overflow-x: hidden;
   }
 
-  /* ---- Cabinet shell --------------------------------------------------- */
+  /* ---- Cabinet shell (gold bezel) ------------------------------------- */
   .cabinet {
-    width: min(680px, 100%);
-    background: linear-gradient(180deg, #1b1b29, var(--cabinet) 30%, #0e0e17);
-    border: 2px solid var(--cabinet-edge);
-    border-radius: 22px;
-    padding: 16px 16px 20px;
+    width: min(700px, 100%);
+    background: linear-gradient(180deg, #f0c862 0%, var(--bezel) 22%, #9c7320 80%, #6f4f12 100%);
+    border-radius: 20px;
+    padding: 14px;
     box-shadow:
-      0 0 0 6px #0a0a12,
-      0 28px 60px rgba(0,0,0,.7),
-      inset 0 2px 0 rgba(255,255,255,.05);
+      0 0 0 3px #2a1d06,
+      0 26px 60px rgba(0,0,0,.75),
+      inset 0 2px 0 rgba(255,255,255,.5),
+      inset 0 -3px 8px rgba(0,0,0,.35);
     position: relative;
   }
 
-  /* Marquee / topper */
+  /* Marquee topper */
   .topper {
     text-align: center;
-    padding: 6px 0 12px;
+    padding: 9px 8px;
+    margin-bottom: 12px;
+    background: linear-gradient(180deg, #12266a, #0a1840);
+    border: 2px solid #f0c862;
+    border-radius: 12px;
+    box-shadow: inset 0 0 18px rgba(0,0,0,.6), 0 2px 4px rgba(0,0,0,.4);
     user-select: none;
   }
   .topper .title {
     font-weight: 900;
-    font-size: clamp(26px, 6vw, 42px);
-    letter-spacing: 3px;
-    background: linear-gradient(90deg, var(--neon), var(--neon2));
-    -webkit-background-clip: text; background-clip: text;
-    color: transparent;
-    filter: drop-shadow(0 0 10px rgba(255,79,216,.55)) drop-shadow(0 0 18px rgba(79,227,255,.35));
-    animation: marquee 4s ease-in-out infinite;
+    font-size: clamp(26px, 6.6vw, 44px);
+    letter-spacing: 5px;
+    color: #fff;
+    text-shadow: 0 0 1px #000, 2px 2px 0 var(--gold-2), -1px -1px 0 #0a1840, 0 0 16px rgba(255,210,26,.55);
   }
   .topper .sub {
     font-size: clamp(10px, 2.4vw, 13px);
-    letter-spacing: 6px;
-    color: var(--amber);
-    text-shadow: 0 0 8px var(--amber-glow);
-    margin-top: 2px;
-  }
-  @keyframes marquee {
-    0%,100% { filter: drop-shadow(0 0 8px rgba(255,79,216,.5)) drop-shadow(0 0 14px rgba(79,227,255,.3)); }
-    50%     { filter: drop-shadow(0 0 16px rgba(255,79,216,.85)) drop-shadow(0 0 26px rgba(79,227,255,.6)); }
+    letter-spacing: 7px;
+    color: var(--yellow);
+    margin-top: 3px;
+    font-weight: 800;
   }
 
-  /* ---- Screen ---------------------------------------------------------- */
+  /* ---- Screen (royal-blue field) -------------------------------------- */
   .screen {
     position: relative;
-    background: radial-gradient(120% 130% at 50% 0%, #0b1426 0%, var(--screen) 70%);
-    border: 3px solid #000;
-    border-radius: 16px;
-    padding: 14px 14px 16px;
-    box-shadow: inset 0 0 50px rgba(0,0,0,.85), inset 0 0 0 1px rgba(80,120,200,.15);
+    background: linear-gradient(180deg, var(--screen) 0%, var(--screen-2) 100%);
+    border: 3px solid #0a1840;
+    border-radius: 10px;
+    padding: 12px;
+    box-shadow: inset 0 0 60px rgba(0,0,0,.35), inset 0 0 0 2px rgba(120,160,255,.25);
     overflow: hidden;
   }
-  /* CRT scanlines + vignette */
-  .screen::after {
-    content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: 16px;
+  .screen::after { /* subtle CRT scanlines + glass sheen */
+    content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: 10px;
     background:
-      repeating-linear-gradient(0deg, rgba(0,0,0,.16) 0 1px, transparent 1px 3px),
-      radial-gradient(120% 120% at 50% 50%, transparent 60%, rgba(0,0,0,.55) 100%);
-    mix-blend-mode: multiply;
-    animation: flicker 6s infinite steps(60);
+      repeating-linear-gradient(0deg, rgba(0,0,0,.07) 0 1px, transparent 1px 3px),
+      linear-gradient(100deg, rgba(255,255,255,.06) 0%, transparent 28%);
   }
-  @keyframes flicker { 0%,97%,100%{opacity:1} 98%{opacity:.93} 99%{opacity:.97} }
 
-  /* ---- Paytable -------------------------------------------------------- */
+  /* ---- Paytable ------------------------------------------------------- */
   .paytable {
-    border: 2px solid #2952b8;
-    border-radius: 8px;
+    border: 2px solid #6f93ff;
+    border-radius: 5px;
     overflow: hidden;
-    background: linear-gradient(180deg, #081634, #03081a);
-    box-shadow: 0 0 14px rgba(41,82,184,.35), inset 0 0 18px rgba(0,30,90,.6);
+    background: linear-gradient(180deg, #1c46bd, #11328f);
     font-variant-numeric: tabular-nums;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.25);
   }
   .pt-row {
     display: grid;
-    grid-template-columns: 1.7fr repeat(5, 1fr);
-    border-bottom: 1px solid rgba(41,82,184,.45);
+    grid-template-columns: 2.1fr repeat(5, 1fr);
+    border-bottom: 1px solid var(--pt-line);
   }
   .pt-row:last-child { border-bottom: 0; }
   .pt-row .name {
+    display: flex; align-items: baseline; gap: 5px;
     font-weight: 800;
-    color: var(--pay-name);
+    color: var(--yellow);
     text-transform: uppercase;
-    letter-spacing: .3px;
-    padding: 4px 8px;
-    font-size: clamp(9px, 2.2vw, 13px);
-    text-shadow: 0 0 6px rgba(255,210,63,.4);
+    letter-spacing: .4px;
+    padding: 3px 8px;
+    font-size: clamp(8px, 2vw, 12px);
     white-space: nowrap;
-    border-right: 1px solid rgba(41,82,184,.45);
+    overflow: hidden;
+  }
+  .pt-row .name::after { /* dotted leader */
+    content: ""; flex: 1; min-width: 8px;
+    border-bottom: 2px dotted rgba(255,210,26,.55);
+    transform: translateY(-2px);
   }
   .pt-row .amt {
     text-align: center;
-    padding: 4px 2px;
-    font-size: clamp(9px, 2.2vw, 13px);
+    padding: 3px 2px;
+    font-size: clamp(8px, 2vw, 12px);
     font-weight: 800;
-    color: var(--pay-amt);
-    border-right: 1px solid rgba(41,82,184,.25);
+    color: var(--yellow);
+    border-left: 1px solid rgba(150,180,255,.2);
   }
-  .pt-row .amt:last-child { border-right: 0; }
-  /* highlighted bet column */
-  .pt-row .amt.col-hi {
-    background: var(--pay-hi-bg);
-    color: var(--pay-hi-text);
-    box-shadow: inset 0 0 8px rgba(0,0,0,.5);
-    text-shadow: 0 0 6px rgba(255,243,107,.6);
+  .pt-row .amt.col-hi { /* active bet column → red box */
+    background: linear-gradient(180deg, var(--red-2), var(--red));
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(0,0,0,.5);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.2);
   }
-  /* the winning row pulses */
+  .pt-row.win-row { background: rgba(255,255,255,.08); }
   .pt-row.win-row .name, .pt-row.win-row .amt { animation: rowpulse .5s ease-in-out infinite alternate; }
-  @keyframes rowpulse { from{filter:none} to{filter:brightness(1.7)} }
+  @keyframes rowpulse { from{filter:none} to{filter:brightness(1.55)} }
 
-  /* ---- Message line ---------------------------------------------------- */
+  /* ---- Message line --------------------------------------------------- */
   .message {
     text-align: center;
-    height: 26px;
-    line-height: 26px;
-    margin: 10px 0 6px;
-    font-weight: 800;
+    height: 24px;
+    line-height: 24px;
+    margin: 9px 0 5px;
+    font-weight: 900;
     letter-spacing: 2px;
-    font-size: clamp(12px, 3vw, 17px);
-    color: var(--amber);
-    text-shadow: 0 0 10px var(--amber-glow);
+    font-size: clamp(13px, 3.2vw, 19px);
+    color: #fff;
+    text-shadow: 0 0 8px rgba(120,170,255,.7), 0 1px 1px rgba(0,0,0,.6);
     text-transform: uppercase;
   }
   .message.blink { animation: blink 1s steps(2,start) infinite; }
-  .message.win  { color: #fff36b; text-shadow: 0 0 14px #ffd23f; }
-  .message.lose { color: var(--led-red); text-shadow: 0 0 12px #ff2d2d; }
-  @keyframes blink { 50% { opacity: .25; } }
+  .message.win  { color: var(--yellow-soft); text-shadow: 0 0 14px var(--yellow); }
+  .message.lose { color: #ff6a6a; text-shadow: 0 0 10px #ff2d2d; }
+  @keyframes blink { 50% { opacity: .3; } }
 
-  /* ---- Cards ----------------------------------------------------------- */
+  /* ---- Cards ---------------------------------------------------------- */
   .hand {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: clamp(6px, 1.8vw, 12px);
-    margin: 6px 0 12px;
+    gap: clamp(5px, 1.6vw, 11px);
+    margin: 4px 0 10px;
   }
-  .slot { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .slot { display: flex; flex-direction: column; align-items: center; gap: 5px; }
 
   .held-lamp {
-    font-size: clamp(8px, 2vw, 11px);
+    font-size: clamp(9px, 2.2vw, 12px);
     font-weight: 900;
     letter-spacing: 2px;
-    color: #0a0a12;
-    background: var(--btn-hold);
-    border-radius: 4px;
-    padding: 2px 8px;
+    color: #fff;
+    background: linear-gradient(180deg, #2a52c8, #0e2470);
+    border: 1px solid #8fb0ff;
+    border-radius: 3px;
+    padding: 1px 9px;
     opacity: 0;
-    transform: translateY(4px) scale(.9);
+    transform: translateY(3px);
     transition: opacity .12s, transform .12s;
-    box-shadow: 0 0 10px rgba(255,194,28,.7);
+    box-shadow: 0 0 9px rgba(130,170,255,.7);
   }
-  .slot.held .held-lamp { opacity: 1; transform: translateY(0) scale(1); }
+  .slot.held .held-lamp { opacity: 1; transform: none; }
 
   .card {
     position: relative;
     width: 100%;
     aspect-ratio: 5 / 7;
     cursor: pointer;
-    perspective: 700px;
+    perspective: 800px;
     border: 0; background: none; padding: 0;
   }
   .card .inner {
     position: absolute; inset: 0;
     transform-style: preserve-3d;
     transition: transform .35s cubic-bezier(.4,1.3,.5,1);
-    border-radius: 8px;
   }
   .card.face-down .inner { transform: rotateY(180deg); }
   .card .face, .card .back {
     position: absolute; inset: 0;
-    border-radius: 8px;
+    border-radius: 7px;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
-    box-shadow: 0 3px 8px rgba(0,0,0,.55);
+    box-shadow: 0 3px 7px rgba(0,0,0,.5);
     overflow: hidden;
   }
   .card .face {
-    background: linear-gradient(160deg, #fff, #e9ecf3);
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    padding: 5px 6px;
+    background: linear-gradient(165deg, #fff, #eef0f6);
+    border: 1px solid #c9cede;
     color: var(--card-black);
   }
-  .card .face .corner {
-    font-weight: 900;
-    line-height: .9;
-    font-size: clamp(13px, 3.6vw, 20px);
-    display: flex; flex-direction: column; align-items: center; width: fit-content;
+  .card.red .face { color: var(--card-red); }
+
+  /* corner index: rank over suit */
+  .card .idx {
+    position: absolute;
+    display: flex; flex-direction: column; align-items: center;
+    font-weight: 900; line-height: .82;
+    font-size: clamp(11px, 3.1vw, 17px);
   }
-  .card .face .corner.br { justify-self: end; transform: rotate(180deg); }
-  .card .face .pip {
-    align-self: center; justify-self: center;
-    font-size: clamp(26px, 8vw, 46px);
+  .card .idx i { font-style: normal; font-size: .92em; margin-top: 1px; }
+  .card .idx.tl { top: 5%; left: 7%; }
+  .card .idx.br { bottom: 5%; right: 7%; transform: rotate(180deg); }
+
+  /* pip grid for number cards */
+  .card .center { position: absolute; inset: 12% 18%; }
+  .card .center .pip {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    font-size: clamp(10px, 2.9vw, 17px);
     line-height: 1;
   }
-  .card.red .corner, .card.red .pip { color: var(--card-red); }
+  .card .center .pip.ace {
+    left: 50%; top: 50%;
+    font-size: clamp(30px, 9vw, 52px);
+  }
+
+  /* court cards (J/Q/K) */
+  .card .court {
+    position: absolute; inset: 13% 15%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 3%;
+    border: 2px solid currentColor;
+    border-radius: 6px;
+    background: linear-gradient(160deg, rgba(0,0,0,.05), rgba(0,0,0,0));
+  }
+  .card .court .crown { width: 52%; height: auto; fill: currentColor; opacity: .92; }
+  .card .court .court-letter { font-weight: 900; font-size: clamp(20px, 6.2vw, 34px); line-height: 1; }
+  .card .court .court-suit { font-size: clamp(15px, 4.2vw, 24px); line-height: 1; }
+
   .card .back {
     transform: rotateY(180deg);
     background:
-      repeating-linear-gradient(45deg, #1b4fae 0 8px, #163f8c 8px 16px),
-      #1b4fae;
+      repeating-linear-gradient(45deg, #1f57c4 0 8px, #1a4093 8px 16px),
+      #1f57c4;
+    border: 1px solid #0a1840;
   }
   .card .back::after {
-    content: ""; position: absolute; inset: 6px; border-radius: 5px;
-    border: 2px solid rgba(255,255,255,.5);
-    background: repeating-linear-gradient(-45deg, rgba(255,255,255,.12) 0 6px, transparent 6px 12px);
+    content: ""; position: absolute; inset: 6px; border-radius: 4px;
+    border: 2px solid rgba(255,255,255,.55);
+    background: repeating-linear-gradient(-45deg, rgba(255,255,255,.14) 0 6px, transparent 6px 12px);
   }
-  .slot.held .card .face { box-shadow: 0 0 0 3px var(--btn-hold), 0 3px 8px rgba(0,0,0,.55); }
+  .slot.held .card .face { box-shadow: 0 0 0 3px var(--yellow), 0 3px 7px rgba(0,0,0,.5); }
   .card.dealing .inner { animation: dealin .35s ease; }
   @keyframes dealin { from { transform: translateY(-40px) rotateZ(-8deg); opacity: 0; } }
-  .card.win-card .face { animation: cardglow .6s ease-in-out infinite alternate; }
-  @keyframes cardglow { to { box-shadow: 0 0 0 3px #ffd23f, 0 0 18px #ffd23f; } }
+  .card.win-card .face { animation: cardglow .55s ease-in-out infinite alternate; }
+  @keyframes cardglow { to { box-shadow: 0 0 0 3px var(--yellow), 0 0 20px var(--yellow); } }
 
-  /* ---- Meters (7-seg-ish) --------------------------------------------- */
-  .meters {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
+  /* ---- Status bar: WIN · BET oval · CREDITS --------------------------- */
+  .status {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 8px; padding-top: 8px;
+    border-top: 2px solid rgba(150,180,255,.3);
   }
-  .meter {
-    background: #03060c;
-    border: 1px solid #1a2740;
-    border-radius: 6px;
-    padding: 5px 8px;
-    text-align: center;
-    box-shadow: inset 0 0 12px rgba(0,0,0,.8);
+  .stat { font-weight: 900; color: var(--yellow); text-transform: uppercase; line-height: 1; }
+  .stat .lbl { display: block; font-size: 9px; letter-spacing: 2px; opacity: .85; margin-bottom: 2px; }
+  .stat .val {
+    font-size: clamp(18px, 5vw, 28px);
+    text-shadow: 0 0 8px rgba(255,210,26,.45);
   }
-  .meter .lbl {
-    font-size: 9px; letter-spacing: 3px; color: var(--muted); font-weight: 700;
+  .stat.credits { text-align: right; }
+  .bet-oval {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 5px 22px; border-radius: 999px;
+    background: radial-gradient(120% 150% at 50% 18%, #fff0b8, var(--gold) 48%, var(--gold-2));
+    color: var(--gold-ink); font-weight: 900;
+    border: 2px solid #9c6f12;
+    box-shadow: 0 2px 6px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.7);
   }
-  .meter .val {
-    font-family: "Courier New", monospace;
-    font-weight: 700;
-    font-size: clamp(18px, 5vw, 26px);
-    letter-spacing: 2px;
-    color: var(--amber);
-    text-shadow: 0 0 8px var(--amber-glow), 0 0 2px var(--amber-glow);
-  }
-  .meter.win .val { color: #6bff9d; text-shadow: 0 0 10px #14ff7a; }
-  .meter.credits .val { color: var(--led-blue); text-shadow: 0 0 10px #1aa3ff; }
+  .bet-oval .lbl { font-size: 9px; letter-spacing: 2px; }
+  .bet-oval .val { font-size: clamp(18px, 5vw, 26px); line-height: 1; }
 
-  /* ---- Button deck ----------------------------------------------------- */
+  /* ---- Button rail (gold) --------------------------------------------- */
   .deck {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 9px;
-    margin-top: 14px;
+    gap: 8px;
+    margin-top: 12px;
   }
   .btn {
-    border: 0;
-    border-radius: 9px;
-    padding: 13px 6px;
+    border: 1px solid #9c6f12;
+    border-radius: 7px;
+    padding: 12px 6px;
     font-weight: 900;
     font-size: clamp(11px, 2.6vw, 14px);
     letter-spacing: .5px;
     text-transform: uppercase;
-    color: #0a0a12;
+    color: var(--gold-ink);
     cursor: pointer;
     position: relative;
-    box-shadow: 0 4px 0 rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.4);
+    background: linear-gradient(180deg, #ffe680, var(--gold) 45%, var(--gold-2));
+    box-shadow: 0 4px 0 #7a5410, inset 0 1px 0 rgba(255,255,255,.7);
     transition: transform .05s, box-shadow .05s, filter .15s;
     user-select: none;
     line-height: 1.15;
   }
-  .btn small { display:block; font-size: 8px; letter-spacing:1px; opacity:.8; font-weight:800; }
-  .btn:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.4); }
-  .btn:disabled { filter: grayscale(.7) brightness(.5); cursor: not-allowed; box-shadow: 0 4px 0 rgba(0,0,0,.45); }
-  .btn.deal   { background: linear-gradient(180deg, #ff5a5a, var(--btn-deal)); color: #fff; }
-  .btn.bet    { background: linear-gradient(180deg, #4fd07a, var(--btn-bet)); color: #052b13; }
-  .btn.max    { background: linear-gradient(180deg, #ffd84f, var(--btn-hold)); }
-  .btn.cash   { background: linear-gradient(180deg, #6fb6ff, var(--btn-take)); color: #02132e; }
-  .btn.double { background: linear-gradient(180deg, #ffa24f, var(--btn-double)); color: #2b1402; }
-  .btn.take   { background: linear-gradient(180deg, #8fd0ff, #2f8fff); color: #02132e; }
+  .btn small { display: block; font-size: 8px; letter-spacing: 1px; opacity: .75; font-weight: 800; }
+  .btn:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 #7a5410, inset 0 1px 0 rgba(255,255,255,.7); }
+  .btn:disabled { filter: grayscale(.6) brightness(.72); cursor: not-allowed; }
+  .btn.deal   { background: linear-gradient(180deg, #ff7a6a, #d8202a 55%, #9c0e16); color: #fff; border-color: #7a0a10; box-shadow: 0 4px 0 #6a0a10, inset 0 1px 0 rgba(255,255,255,.4); }
+  .btn.double { background: linear-gradient(180deg, #ffd083, #ff8c1a 50%, #d9690a); }
+  .btn.take   { background: linear-gradient(180deg, #bfe7ff, #4aa3ff 50%, #1f6fd8); color: #03203f; border-color: #14508f; box-shadow: 0 4px 0 #134a85, inset 0 1px 0 rgba(255,255,255,.5); }
   .btn.glow { animation: btnglow .8s ease-in-out infinite alternate; }
-  @keyframes btnglow { to { filter: brightness(1.35); } }
+  @keyframes btnglow { to { filter: brightness(1.22); } }
   .hidden { display: none !important; }
 
-  /* ---- Top bar (mute / info) ------------------------------------------ */
-  .topbar {
-    position: absolute; top: 14px; right: 16px; display: flex; gap: 8px; z-index: 5;
-  }
+  /* ---- Chrome: mute, stats, footer ------------------------------------ */
+  .topbar { position: absolute; top: 22px; right: 24px; display: flex; gap: 8px; z-index: 5; }
   .icon-btn {
-    background: rgba(0,0,0,.35); border: 1px solid var(--cabinet-edge); color: var(--muted);
-    border-radius: 8px; width: 34px; height: 30px; cursor: pointer; font-size: 15px;
+    background: rgba(8,18,48,.6); border: 1px solid #d8a83e; color: var(--yellow);
+    border-radius: 7px; width: 34px; height: 30px; cursor: pointer; font-size: 15px;
   }
-  .icon-btn:hover { color: var(--text); }
+  .icon-btn:hover { filter: brightness(1.2); }
 
-  .stats {
-    display:flex; justify-content:center; gap:18px; margin-top:10px;
-    font-size: 11px; color: var(--muted); letter-spacing:1px;
+  .railnote {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 8px; font-size: 10px; letter-spacing: 1px; color: var(--muted);
   }
-  .stats b { color: var(--amber); font-weight:800; }
-
-  .footer {
-    text-align:center; margin-top: 10px; font-size: 10px; color: #4a4a63; letter-spacing:1px;
-  }
-  .footer a { color: #6a6a8a; text-decoration: none; }
+  .railnote b { color: var(--yellow); font-weight: 800; }
+  .footer { text-align: center; margin-top: 6px; font-size: 10px; color: #6f6a4a; letter-spacing: 1px; }
+  .footer a { color: #b89a4a; text-decoration: none; }
 
   @media (max-width: 430px) {
     body { padding: 8px; }
-    .cabinet { padding: 12px 10px 16px; border-radius: 16px; }
+    .cabinet { padding: 10px; border-radius: 14px; }
+    .topbar { top: 16px; right: 16px; }
     .deck { gap: 6px; }
   }
 </style>
@@ -375,16 +377,16 @@
       <div class="paytable" id="paytable" aria-label="Paytable"></div>
       <div class="message blink" id="message">INSERT COIN &nbsp;•&nbsp; PRESS DEAL</div>
       <div class="hand" id="hand" aria-label="Your hand"></div>
-      <div class="meters">
-        <div class="meter credits"><div class="lbl">CREDITS</div><div class="val" id="mCredits">0</div></div>
-        <div class="meter bet"><div class="lbl">BET</div><div class="val" id="mBet">1</div></div>
-        <div class="meter win"><div class="lbl">WIN</div><div class="val" id="mWin">0</div></div>
+      <div class="status">
+        <div class="stat win"><span class="lbl">WIN</span><span class="val" id="mWin">0</span></div>
+        <div class="bet-oval"><span class="lbl">BET</span><span class="val" id="mBet">1</span></div>
+        <div class="stat credits"><span class="lbl">CREDITS</span><span class="val" id="mCredits">0</span></div>
       </div>
     </section>
 
     <div class="deck">
-      <button class="btn bet"  id="betBtn">Bet One<small>+1 / wrap</small></button>
-      <button class="btn max"  id="maxBtn">Max Bet<small>5 &amp; deal</small></button>
+      <button class="btn bet"  id="betBtn">Bet Up<small>+1 / wrap</small></button>
+      <button class="btn max"  id="maxBtn">Bet Max<small>5 &amp; deal</small></button>
       <button class="btn cash" id="cashBtn">Cash Out<small>collect</small></button>
       <button class="btn deal" id="dealBtn">Deal<small>new hand</small></button>
 
@@ -392,11 +394,11 @@
       <button class="btn double hidden" id="doubleBtn">Double Up<small>gamble</small></button>
     </div>
 
-    <div class="stats">
-      <span>HANDS <b id="sHands">0</b></span>
-      <span>BIGGEST WIN <b id="sBig">0</b></span>
+    <div class="railnote">
+      <span>JACKS OR BETTER</span>
+      <span>HANDS <b id="sHands">0</b> &nbsp; BIGGEST WIN <b id="sBig">0</b></span>
     </div>
-    <div class="footer">Jarvis Poker · <span id="ver">v0.1</span> · <a href="https://poker.dabrewer.dev/" target="_blank" rel="noopener">poker.dabrewer.dev</a></div>
+    <div class="footer">Jarvis Poker · <span id="ver">v0.2</span> · <a href="https://poker.dabrewer.dev/" target="_blank" rel="noopener">poker.dabrewer.dev</a></div>
   </main>
 
 <script>
@@ -405,7 +407,7 @@
    JARVIS POKER — game logic (vanilla, no framework)
    ======================================================================= */
 (function () {
-  const VERSION = "v0.1";
+  const VERSION = "v0.2";
   const SAVE_KEY = "jarvisPoker.v1";
   const START_CREDITS = 100;
   const INSERT_AMOUNT = 100;
@@ -417,6 +419,20 @@
   const RED_SUITS = new Set([1, 2]);
   const RANK_LABEL = { 11: "J", 12: "Q", 13: "K", 14: "A" };
   const rankLabel = (r) => RANK_LABEL[r] || String(r);
+
+  // Authentic pip layouts ([x%, y%] within the card's center box; pips in the
+  // bottom half (y>50) are rotated 180°, just like a real deck).
+  const PIPS = {
+    2: [[50,14],[50,86]],
+    3: [[50,14],[50,50],[50,86]],
+    4: [[26,14],[74,14],[26,86],[74,86]],
+    5: [[26,14],[74,14],[50,50],[26,86],[74,86]],
+    6: [[26,14],[74,14],[26,50],[74,50],[26,86],[74,86]],
+    7: [[26,14],[74,14],[50,32],[26,50],[74,50],[26,86],[74,86]],
+    8: [[26,14],[74,14],[50,32],[26,50],[74,50],[50,68],[26,86],[74,86]],
+    9: [[26,14],[74,14],[26,39],[74,39],[50,50],[26,61],[74,61],[26,86],[74,86]],
+    10: [[26,14],[74,14],[50,27],[26,40],[74,40],[26,60],[74,60],[50,73],[26,86],[74,86]],
+  };
 
   function freshDeck() {
     const d = [];
@@ -582,7 +598,8 @@
       row.className = "pt-row";
       row.dataset.key = h.key;
       const name = document.createElement("div");
-      name.className = "name"; name.textContent = h.label;
+      name.className = "name";
+      name.innerHTML = `<span>${h.label}</span>`;
       row.appendChild(name);
       for (let b = 0; b < 5; b++) {
         const amt = document.createElement("div");
@@ -603,15 +620,32 @@
     });
   }
 
+  const CROWN = '<svg class="crown" viewBox="0 0 26 16" aria-hidden="true"><path d="M2 14.5 L4 4 L9 9 L13 2 L17 9 L22 4 L24 14.5 Z"/></svg>';
+
+  // Center art: ace = one big pip; 2-10 = pip grid; J/Q/K = framed court card.
+  function centerMarkup(card) {
+    const sym = SUITS[card.s];
+    if (card.r >= 11 && card.r <= 13) {
+      return `<div class="court">${CROWN}<span class="court-letter">${rankLabel(card.r)}</span><span class="court-suit">${sym}</span></div>`;
+    }
+    if (card.r === 14) {
+      return `<div class="center"><span class="pip ace">${sym}</span></div>`;
+    }
+    const pips = PIPS[card.r].map(([x, y]) => {
+      const rot = y > 50 ? " rotate(180deg)" : "";
+      return `<span class="pip" style="left:${x}%;top:${y}%;transform:translate(-50%,-50%)${rot}">${sym}</span>`;
+    }).join("");
+    return `<div class="center">${pips}</div>`;
+  }
+
   function cardFace(card) {
-    const red = RED_SUITS.has(card.s);
     const sym = SUITS[card.s], lab = rankLabel(card.r);
     return `
       <div class="inner">
         <div class="face">
-          <div class="corner tl"><span>${lab}</span><span>${sym}</span></div>
-          <div class="pip">${sym}</div>
-          <div class="corner br"><span>${lab}</span><span>${sym}</span></div>
+          <span class="idx tl">${lab}<i>${sym}</i></span>
+          ${centerMarkup(card)}
+          <span class="idx br">${lab}<i>${sym}</i></span>
         </div>
         <div class="back"></div>
       </div>`;

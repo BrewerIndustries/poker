@@ -53,6 +53,16 @@ updated only via an approved PR.
 
 ## Changelog
 
+### v0.2 — *Game King*
+- Reskinned to the classic IGT **Game King** look: royal-blue field, gold cabinet
+  bezel + button rail, and a marquee topper
+- Paytable now uses dotted leaders with the **active bet column lit red** (the max-bet
+  Royal Flush jackpot stays at 4000)
+- Authentic card faces: real pip layouts for 2–10, framed **court cards** (J/Q/K) with a
+  crown emblem, and a big-pip Ace — with corner indices (rank over suit)
+- **WIN · BET-oval · CREDITS** status bar (replaces the 7-segment meters); gold buttons
+  (Bet Up / Bet Max / Cash Out) with a red Deal/Draw
+
 ### v0.1 — *Cold Open*
 - Jacks or Better video poker: shuffle, deal, hold, draw, 9/6 paytable + hand evaluator
 - Bet 1–5 with the classic max-bet Royal Flush jackpot (4000)
