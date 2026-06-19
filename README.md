@@ -54,6 +54,14 @@ updated only via an approved PR.
 
 ## Changelog
 
+### v0.5 — *Multi-Hand*
+- **Play 1–4 hands at once** (OPTIONS → Hands) — Triple/Quad-Play style. Your holds copy
+  into every hand; each hand then draws its own cards from its own deck, and every hand pays
+  separately (total bet = bet × hands, total win = sum)
+- Extra hands stack above the dealt hand as compact rows with per-hand **win badges**; the
+  winning paytable rows highlight across all hands
+- Bet oval shows the **×N** multiplier; works with every game and Double-Up (gambles the total)
+
 ### v0.4 — *Game King Lineup*
 - **Five selectable games** (OPTIONS → Game): Jacks or Better, Bonus Poker, Double Bonus,
   **Double Double Bonus** (four-of-a-kind kicker tiers), and **Deuces Wild** (every 2 is wild)
