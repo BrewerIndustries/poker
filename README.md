@@ -1,8 +1,9 @@
 # Jarvis Poker
 
-An old-school casino bar-top **video poker** machine in your browser — classic
-*Jacks or Better* (9/6), hold and draw, a lit paytable, 7-segment credit/bet/win
-meters, the iconic **Double-Up** gamble, and a glowing CRT cabinet.
+An old-school casino bar-top **video poker** machine in your browser — IGT "Game King"
+style, with **five classic variants** (Jacks or Better, Bonus, Double Bonus, Double Double
+Bonus, Deuces Wild), hold and draw, lit paytables, a denomination badge with cash value, the
+iconic **Double-Up** gamble, a jackpot coin shower, and a glowing CRT cabinet.
 
 Play it: **[poker.dabrewer.dev](https://poker.dabrewer.dev/)** · dev build at
 [poker.dabrewer.dev/dev/](https://poker.dabrewer.dev/dev/)
@@ -52,6 +53,42 @@ python3 -m http.server 3000   # then open http://localhost:3000
 updated only via an approved PR.
 
 ## Changelog
+
+### v0.5 — *Multi-Hand*
+- **Play 1–4 hands at once** (OPTIONS → Hands) — Triple/Quad-Play style. Your holds copy
+  into every hand; each hand then draws its own cards from its own deck, and every hand pays
+  separately (total bet = bet × hands, total win = sum)
+- Extra hands stack above the dealt hand as compact rows with per-hand **win badges**; the
+  winning paytable rows highlight across all hands
+- Bet oval shows the **×N** multiplier; works with every game and Double-Up (gambles the total)
+
+### v0.4 — *Game King Lineup*
+- **Five selectable games** (OPTIONS → Game): Jacks or Better, Bonus Poker, Double Bonus,
+  **Double Double Bonus** (four-of-a-kind kicker tiers), and **Deuces Wild** (every 2 is wild)
+- Per-game paytables + correct evaluation — bonus quad-by-rank tiers, DDB kicker logic, and a
+  full wild-card evaluator (natural/wild royal, five of a kind, four deuces). Pay tables match
+  [Wizard of Odds](https://wizardofodds.com/games/video-poker/) (9/6 JoB, 8/5 Bonus, 10/7 Double
+  Bonus, 9/6 DDB, full-pay Deuces)
+- **Denomination-aware WIN meter** — WIN now shows its cash value alongside CREDITS
+- Deuces render as gold **WILD** cards; the marquee ribbon shows the active game
+
+### v0.3 — *Max Theming*
+- Crowned marquee + gold cabinet with corner screws and a chrome screen frame
+- **Denomination badge** (1¢ – $5) with a live **cash-value** readout under credits
+- **MENU** (rules) and **OPTIONS** (sound · speed · denomination · reset bankroll / clear
+  stats) overlays; **SPEED** control (Slow → Turbo) that scales every animation
+- Jackpot celebration — screen flash + gold **coin shower**, animated win/credit count-ups,
+  and a special Royal Flush jackpot banner
+
+### v0.2 — *Game King*
+- Reskinned to the classic IGT **Game King** look: royal-blue field, gold cabinet
+  bezel + button rail, and a marquee topper
+- Paytable now uses dotted leaders with the **active bet column lit red** (the max-bet
+  Royal Flush jackpot stays at 4000)
+- Authentic card faces: real pip layouts for 2–10, framed **court cards** (J/Q/K) with a
+  crown emblem, and a big-pip Ace — with corner indices (rank over suit)
+- **WIN · BET-oval · CREDITS** status bar (replaces the 7-segment meters); gold buttons
+  (Bet Up / Bet Max / Cash Out) with a red Deal/Draw
 
 ### v0.1 — *Cold Open*
 - Jacks or Better video poker: shuffle, deal, hold, draw, 9/6 paytable + hand evaluator
