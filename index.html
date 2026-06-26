@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
 <meta name="theme-color" content="#0a1840" />
 <title>Jarvis Poker — Video Poker</title>
 <meta name="description" content="Old-school multi-game, multi-hand video poker — Jacks or Better, Bonus, Double Double Bonus, Deuces Wild." />
@@ -27,7 +27,7 @@
   body {
     background: radial-gradient(130% 100% at 50% -10%, #14224e 0%, var(--room) 55%, #02060f 100%);
     color: var(--white); font-family: "Arial Narrow", "Segoe UI", system-ui, -apple-system, sans-serif;
-    display: flex; align-items: center; justify-content: center; min-height: 100%; padding: 16px; overflow-x: hidden;
+    display: flex; align-items: center; justify-content: center; min-height: 100%; padding: 16px; padding-bottom: max(16px, env(safe-area-inset-bottom)); overflow-x: hidden;
   }
   .cabinet {
     width: min(700px, 100%); position: relative;
@@ -56,6 +56,11 @@
   .topper .ribbon { display: inline-block; margin-top: 5px; padding: 2px 16px; font-size: clamp(10px, 2.4vw, 13px);
     letter-spacing: 5px; font-weight: 800; color: #fff; background: linear-gradient(180deg, var(--red-2), #9c0e16); border-radius: 3px;
     box-shadow: 0 1px 3px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.3); }
+  .dev-badge { display: none; width: fit-content; margin: 0 auto 4px; padding: 4px 16px; font-size: clamp(14px, 4vw, 20px);
+    font-weight: 900; letter-spacing: 5px; color: #fff; background: linear-gradient(180deg, var(--red-2), #9c0e16);
+    border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.3); text-shadow: 0 1px 2px rgba(0,0,0,.4); }
+  body.is-dev .king-crown { display: none; }
+  body.is-dev .dev-badge { display: block; }
 
   .screen { position: relative; background: linear-gradient(180deg, var(--screen) 0%, var(--screen-2) 100%);
     border: 4px solid; border-image: linear-gradient(180deg, #e9edf6, #8b93a8 50%, #c7ccda) 1; border-radius: 10px; padding: 12px;
@@ -177,10 +182,10 @@
   .hidden { display: none !important; }
 
   .overlay { position: absolute; inset: 0; z-index: 20; display: flex; align-items: center; justify-content: center; padding: 18px; background: rgba(4,10,30,.72); border-radius: 22px; }
-  .panel { width: min(440px, 100%); max-height: 92%; overflow: auto; background: linear-gradient(180deg, #16327e, #0c1f5e); color: var(--white);
+  .panel { width: min(440px, 100%); max-height: min(92%, 80vh); overflow: auto; -webkit-overflow-scrolling: touch; background: linear-gradient(180deg, #16327e, #0c1f5e); color: var(--white);
     border: 3px solid #f0c862; border-radius: 12px; box-shadow: 0 14px 40px rgba(0,0,0,.6); }
   .panel-head { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; font-weight: 900; letter-spacing: 2px; color: var(--yellow); border-bottom: 2px solid rgba(255,210,26,.3); text-transform: uppercase; }
-  .panel-head .x { background: var(--red); color: #fff; border: 0; border-radius: 6px; width: 28px; height: 26px; font-weight: 900; cursor: pointer; }
+  .panel-head .x { background: var(--red); color: #fff; border: 0; border-radius: 6px; width: 34px; height: 34px; font-weight: 900; cursor: pointer; }
   .opt-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 14px; border-bottom: 1px solid rgba(150,180,255,.18); }
   .opt-row > span { font-weight: 800; letter-spacing: 1px; font-size: 12px; color: var(--muted); text-transform: uppercase; flex-shrink: 0; }
   .seg { display: flex; flex-wrap: wrap; gap: 5px; justify-content: flex-end; }
@@ -195,21 +200,24 @@
   .panel-foot a { color: var(--yellow); text-decoration: none; }
 
   .topbar { position: absolute; top: 26px; right: 28px; display: flex; gap: 8px; z-index: 8; }
-  .icon-btn { background: rgba(8,18,48,.6); border: 1px solid #d8a83e; color: var(--yellow); border-radius: 7px; width: 34px; height: 30px; cursor: pointer; font-size: 15px; }
+  .icon-btn { background: rgba(8,18,48,.6); border: 1px solid #d8a83e; color: var(--yellow); border-radius: 7px; width: 40px; height: 40px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
   .icon-btn:hover { filter: brightness(1.2); }
+  .rail-row.utility { grid-template-columns: 1fr 1fr auto; }
+  .opt-divider { height: 0; border-top: 1px solid rgba(150,180,255,.25); margin: 3px 14px; }
   .railnote { display: flex; justify-content: space-between; align-items: center; margin-top: 9px; font-size: 10px; letter-spacing: 1px; color: #5a4a1e; }
   .railnote b { color: #3a2e10; font-weight: 800; }
   .footer { text-align: center; margin-top: 5px; font-size: 10px; color: #5a4a1e; letter-spacing: 1px; }
   .footer a { color: #4a3c14; text-decoration: none; }
-  @media (max-width: 430px) { body { padding: 8px; } .cabinet { padding: 12px 10px 10px; border-radius: 16px; } .topbar { top: 18px; right: 16px; } .rail-row { gap: 6px; } .btn { padding: 11px 4px; } }
+  @media (max-width: 430px) { body { padding: 8px; padding-bottom: max(8px, env(safe-area-inset-bottom)); } .cabinet { padding: 12px 10px 10px; border-radius: 16px; } .topbar { top: 18px; right: 16px; } .rail-row { gap: 6px; } .btn { padding: 11px 4px; } }
 </style>
 </head>
 <body>
   <main class="cabinet" role="application" aria-label="Jarvis Poker video poker machine">
     <span class="screw-b l" aria-hidden="true"></span><span class="screw-b r" aria-hidden="true"></span>
-    <div class="topbar"><button class="icon-btn" id="muteBtn" title="Mute / unmute (M)" aria-label="Toggle sound">🔊</button></div>
+    <div class="topbar"><button class="icon-btn" id="helpBtn" title="Help / Rules (H)" aria-label="Help and rules" style="font-size:18px;font-weight:900;">?</button><button class="icon-btn" id="muteBtn" title="Mute / unmute (M)" aria-label="Toggle sound">🔊</button></div>
 
     <div class="topper">
+      <div class="dev-badge" aria-label="Development build">DEV</div>
       <svg class="king-crown" viewBox="0 0 64 40" aria-hidden="true">
         <path d="M6 34 L10 12 L22 24 L32 6 L42 24 L54 12 L58 34 Z" fill="#ffd21a" stroke="#8a5f10" stroke-width="2" stroke-linejoin="round"/>
         <circle cx="10" cy="11" r="4" fill="#ff3242" stroke="#8a5f10" stroke-width="1.5"/>
@@ -239,16 +247,16 @@
           <div class="rules">
             <h4>The Game</h4>
             <p>Dealt 5 cards — <b>click cards to HOLD</b>, then <b>DRAW</b> to replace the rest. Make a paying hand to win.</p>
-            <h4>Multi-Hand (OPTIONS → Hands)</h4>
+            <h4>Multi-Hand (GAMES → Hands)</h4>
             <p>Play <b>1–4 hands</b> at once. Your holds copy into every hand; each hand then draws its own cards from its own deck.
             Total bet = bet × hands, and every hand pays separately.</p>
-            <h4>Games (OPTIONS → Game)</h4>
+            <h4>Games (GAMES → Game)</h4>
             <p><b>Jacks or Better</b> · <b>Bonus</b> &amp; <b>Double Bonus</b> · <b>Double Double Bonus</b> (kicker bonuses) ·
             <b>Deuces Wild</b> (every 2 is wild — min paying hand is three of a kind).</p>
             <h4>Double Up</h4>
             <p>After a win, <b>DOUBLE UP</b> to gamble the total: beat the dealer's card to double. Tie pushes; lower loses it all.</p>
             <h4>Keys</h4>
-            <p><kbd>1</kbd>–<kbd>5</kbd> hold · <kbd>Enter</kbd>/<kbd>Space</kbd> deal/draw/take · <kbd>D</kbd> double · <kbd>M</kbd> mute · <kbd>Esc</kbd> close</p>
+            <p><kbd>1</kbd>–<kbd>5</kbd> hold · <kbd>Enter</kbd>/<kbd>Space</kbd> deal/draw/take · <kbd>D</kbd> double · <kbd>M</kbd> mute · <kbd>H</kbd> help · <kbd>G</kbd> games · <kbd>Esc</kbd> close</p>
           </div>
           <div class="panel-foot">Jarvis Poker · <span id="ver2">v0.5</span> · <a href="https://poker.dabrewer.dev/" target="_blank" rel="noopener">poker.dabrewer.dev</a></div>
         </div>
@@ -256,9 +264,10 @@
 
       <div class="overlay hidden" id="optionsOverlay">
         <div class="panel">
-          <div class="panel-head">Options <button class="x" data-close aria-label="Close">✕</button></div>
+          <div class="panel-head">Games <button class="x" data-close aria-label="Close">✕</button></div>
           <div class="opt-row"><span>Game</span><div class="seg" id="optGame"></div></div>
           <div class="opt-row"><span>Hands</span><div class="seg" id="optHands"></div></div>
+          <div class="opt-divider"></div>
           <div class="opt-row"><span>Sound</span><div class="seg" id="optSound"><button data-snd="on">On</button><button data-snd="off">Off</button></div></div>
           <div class="opt-row"><span>Speed</span><div class="seg" id="optSpeed"></div></div>
           <div class="opt-row"><span>Denomination</span><div class="seg" id="optDenom"></div></div>
@@ -270,8 +279,7 @@
 
     <div class="rail">
       <div class="rail-row utility">
-        <button class="btn util" id="menuBtn">Menu<small>rules</small></button>
-        <button class="btn util" id="optionsBtn">Options<small>game · hands</small></button>
+        <button class="btn util" id="menuBtn">Games<small>select</small></button>
         <button class="btn util" id="speedBtn">Speed <span class="arrows" id="speedArrows">»</span><small id="speedLbl">Normal</small></button>
         <button class="denom-badge" id="denomBtn" title="Denomination (click to cycle)"><span class="lbl">DENOM</span><b id="mDenom">25¢</b></button>
       </div>
@@ -295,7 +303,7 @@
    JARVIS POKER — multi-game, multi-hand video poker (vanilla, no framework)
    ======================================================================= */
 (function () {
-  const VERSION = "v0.5";
+  const VERSION = "v0.6";
   const SAVE_KEY = "jarvisPoker.v1";
   const START_CREDITS = 100;
   const INSERT_AMOUNT = 100;
@@ -433,7 +441,7 @@
     ribbon: $("ribbon"), gameNote: $("gameNote"),
     mCredits: $("mCredits"), mBet: $("mBet"), mWin: $("mWin"), mCash: $("mCash"), mWinCash: $("mWinCash"), mLines: $("mLines"),
     betBtn: $("betBtn"), maxBtn: $("maxBtn"), cashBtn: $("cashBtn"), dealBtn: $("dealBtn"), takeBtn: $("takeBtn"), doubleBtn: $("doubleBtn"),
-    menuBtn: $("menuBtn"), optionsBtn: $("optionsBtn"), speedBtn: $("speedBtn"), speedLbl: $("speedLbl"), speedArrows: $("speedArrows"),
+    menuBtn: $("menuBtn"), helpBtn: $("helpBtn"), speedBtn: $("speedBtn"), speedLbl: $("speedLbl"), speedArrows: $("speedArrows"),
     denomBtn: $("denomBtn"), mDenom: $("mDenom"),
     menuOverlay: $("menuOverlay"), optionsOverlay: $("optionsOverlay"),
     optGame: $("optGame"), optHands: $("optHands"), optSound: $("optSound"), optSpeed: $("optSpeed"), optDenom: $("optDenom"), optReset: $("optReset"), optClear: $("optClear"),
@@ -528,13 +536,18 @@
     S.hand.forEach((card, i) => {
       const slot = slots[i], btn = slot.querySelector(".card");
       if (opts.faceUp !== false) {
+        btn.classList.remove("dealing"); // cancel in-flight deal anim before replacing content (prevents bounce on click)
         btn.innerHTML = cardFace(card); btn.classList.toggle("red", RED_SUITS.has(card.s)); btn.classList.toggle("wild", isWildCard(card)); btn.classList.remove("face-down");
       }
       slot.classList.toggle("held", S.held[i]);
       btn.classList.toggle("win-card", !!opts.winCards);
       if (opts.dealAnim && !S.held[i]) {
         btn.classList.remove("dealing"); void btn.offsetWidth;
-        const inner = btn.querySelector(".inner"); if (inner) inner.style.animationDelay = `${Math.round(i * 60 * speedScale())}ms`;
+        const inner = btn.querySelector(".inner");
+        if (inner) {
+          inner.style.animationDelay = `${Math.round(i * 60 * speedScale())}ms`;
+          inner.addEventListener("animationend", () => btn.classList.remove("dealing"), { once: true });
+        }
         btn.classList.add("dealing");
       }
     });
@@ -755,8 +768,8 @@
     el.muteBtn.addEventListener("click", toggleMute);
     el.denomBtn.addEventListener("click", cycleDenom);
     el.speedBtn.addEventListener("click", cycleSpeed);
-    el.menuBtn.addEventListener("click", () => openOverlay(el.menuOverlay));
-    el.optionsBtn.addEventListener("click", () => { syncOptions(); openOverlay(el.optionsOverlay); });
+    el.menuBtn.addEventListener("click", () => { syncOptions(); openOverlay(el.optionsOverlay); });
+    el.helpBtn.addEventListener("click", () => openOverlay(el.menuOverlay));
 
     el.hand.addEventListener("click", (e) => { const card = e.target.closest(".card"); if (!card) return; const i = +card.dataset.i; if (S.phase === "dealt") toggleHold(i); else if (S.phase === "double") pickDouble(i); });
 
@@ -777,10 +790,13 @@
       else if (k === "enter" || k === " ") { e.preventDefault(); if (S.phase === "ready") deal(); else if (S.phase === "dealt") draw(); else if (S.phase === "result") takeWin(); }
       else if (k === "d") { if (S.phase === "result") startDouble(); }
       else if (k === "m") { toggleMute(); }
+      else if (k === "h") { openOverlay(el.menuOverlay); }
+      else if (k === "g") { syncOptions(); openOverlay(el.optionsOverlay); }
     });
   }
 
   function init() {
+    if (location.pathname.startsWith("/dev")) document.body.classList.add("is-dev");
     el.ver.textContent = VERSION; if (el.ver2) el.ver2.textContent = VERSION;
     load();
     buildPaytable(); buildHand(); buildHandsStack(); buildOptions(); applyGameChrome(); applySpeed();

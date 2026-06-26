@@ -54,8 +54,15 @@ updated only via an approved PR.
 
 ## Changelog
 
+### v0.6 — *Nav overhaul + bug fixes*
+- **GAMES button** (was Menu) opens the Settings overlay — game & hand selection front-and-centre
+- **HELP button** (was Options) opens the How to Play rules panel
+- **DEV badge** — on the `/dev/` build the crown is replaced with a red DEV pill so the environment is always obvious
+- **Card bounce fix** — clicking a card to hold it no longer replays the deal-in animation on the newly created `.inner` element; `animationend` listener is now on `.inner` itself so it's GC'd on replace
+- Mobile: `viewport-fit=cover` + safe-area padding, larger mute / close touch targets, panel capped at `80vh` with smooth iOS scroll
+
 ### v0.5 — *Multi-Hand*
-- **Play 1–4 hands at once** (OPTIONS → Hands) — Triple/Quad-Play style. Your holds copy
+- **Play 1–4 hands at once** (GAMES → Hands) — Triple/Quad-Play style. Your holds copy
   into every hand; each hand then draws its own cards from its own deck, and every hand pays
   separately (total bet = bet × hands, total win = sum)
 - Extra hands stack above the dealt hand as compact rows with per-hand **win badges**; the
