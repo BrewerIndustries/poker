@@ -200,8 +200,10 @@
   .panel-foot a { color: var(--yellow); text-decoration: none; }
 
   .topbar { position: absolute; top: 26px; right: 28px; display: flex; gap: 8px; z-index: 8; }
-  .icon-btn { background: rgba(8,18,48,.6); border: 1px solid #d8a83e; color: var(--yellow); border-radius: 7px; width: 40px; height: 36px; cursor: pointer; font-size: 16px; }
+  .icon-btn { background: rgba(8,18,48,.6); border: 1px solid #d8a83e; color: var(--yellow); border-radius: 7px; width: 40px; height: 40px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; }
   .icon-btn:hover { filter: brightness(1.2); }
+  .rail-row.utility { grid-template-columns: 1fr 1fr auto; }
+  .opt-divider { height: 0; border-top: 1px solid rgba(150,180,255,.25); margin: 3px 14px; }
   .railnote { display: flex; justify-content: space-between; align-items: center; margin-top: 9px; font-size: 10px; letter-spacing: 1px; color: #5a4a1e; }
   .railnote b { color: #3a2e10; font-weight: 800; }
   .footer { text-align: center; margin-top: 5px; font-size: 10px; color: #5a4a1e; letter-spacing: 1px; }
@@ -212,7 +214,7 @@
 <body>
   <main class="cabinet" role="application" aria-label="Jarvis Poker video poker machine">
     <span class="screw-b l" aria-hidden="true"></span><span class="screw-b r" aria-hidden="true"></span>
-    <div class="topbar"><button class="icon-btn" id="muteBtn" title="Mute / unmute (M)" aria-label="Toggle sound">🔊</button></div>
+    <div class="topbar"><button class="icon-btn" id="helpBtn" title="Help / Rules (H)" aria-label="Help and rules" style="font-size:18px;font-weight:900;">?</button><button class="icon-btn" id="muteBtn" title="Mute / unmute (M)" aria-label="Toggle sound">🔊</button></div>
 
     <div class="topper">
       <div class="dev-badge" aria-label="Development build">DEV</div>
@@ -254,7 +256,7 @@
             <h4>Double Up</h4>
             <p>After a win, <b>DOUBLE UP</b> to gamble the total: beat the dealer's card to double. Tie pushes; lower loses it all.</p>
             <h4>Keys</h4>
-            <p><kbd>1</kbd>–<kbd>5</kbd> hold · <kbd>Enter</kbd>/<kbd>Space</kbd> deal/draw/take · <kbd>D</kbd> double · <kbd>M</kbd> mute · <kbd>Esc</kbd> close</p>
+            <p><kbd>1</kbd>–<kbd>5</kbd> hold · <kbd>Enter</kbd>/<kbd>Space</kbd> deal/draw/take · <kbd>D</kbd> double · <kbd>M</kbd> mute · <kbd>H</kbd> help · <kbd>G</kbd> games · <kbd>Esc</kbd> close</p>
           </div>
           <div class="panel-foot">Jarvis Poker · <span id="ver2">v0.5</span> · <a href="https://poker.dabrewer.dev/" target="_blank" rel="noopener">poker.dabrewer.dev</a></div>
         </div>
@@ -262,9 +264,10 @@
 
       <div class="overlay hidden" id="optionsOverlay">
         <div class="panel">
-          <div class="panel-head">Settings <button class="x" data-close aria-label="Close">✕</button></div>
+          <div class="panel-head">Games <button class="x" data-close aria-label="Close">✕</button></div>
           <div class="opt-row"><span>Game</span><div class="seg" id="optGame"></div></div>
           <div class="opt-row"><span>Hands</span><div class="seg" id="optHands"></div></div>
+          <div class="opt-divider"></div>
           <div class="opt-row"><span>Sound</span><div class="seg" id="optSound"><button data-snd="on">On</button><button data-snd="off">Off</button></div></div>
           <div class="opt-row"><span>Speed</span><div class="seg" id="optSpeed"></div></div>
           <div class="opt-row"><span>Denomination</span><div class="seg" id="optDenom"></div></div>
@@ -276,8 +279,7 @@
 
     <div class="rail">
       <div class="rail-row utility">
-        <button class="btn util" id="menuBtn">Games<small>settings</small></button>
-        <button class="btn util" id="optionsBtn">Help<small>rules</small></button>
+        <button class="btn util" id="menuBtn">Games<small>select</small></button>
         <button class="btn util" id="speedBtn">Speed <span class="arrows" id="speedArrows">»</span><small id="speedLbl">Normal</small></button>
         <button class="denom-badge" id="denomBtn" title="Denomination (click to cycle)"><span class="lbl">DENOM</span><b id="mDenom">25¢</b></button>
       </div>
@@ -439,7 +441,7 @@
     ribbon: $("ribbon"), gameNote: $("gameNote"),
     mCredits: $("mCredits"), mBet: $("mBet"), mWin: $("mWin"), mCash: $("mCash"), mWinCash: $("mWinCash"), mLines: $("mLines"),
     betBtn: $("betBtn"), maxBtn: $("maxBtn"), cashBtn: $("cashBtn"), dealBtn: $("dealBtn"), takeBtn: $("takeBtn"), doubleBtn: $("doubleBtn"),
-    menuBtn: $("menuBtn"), optionsBtn: $("optionsBtn"), speedBtn: $("speedBtn"), speedLbl: $("speedLbl"), speedArrows: $("speedArrows"),
+    menuBtn: $("menuBtn"), helpBtn: $("helpBtn"), speedBtn: $("speedBtn"), speedLbl: $("speedLbl"), speedArrows: $("speedArrows"),
     denomBtn: $("denomBtn"), mDenom: $("mDenom"),
     menuOverlay: $("menuOverlay"), optionsOverlay: $("optionsOverlay"),
     optGame: $("optGame"), optHands: $("optHands"), optSound: $("optSound"), optSpeed: $("optSpeed"), optDenom: $("optDenom"), optReset: $("optReset"), optClear: $("optClear"),
@@ -767,7 +769,7 @@
     el.denomBtn.addEventListener("click", cycleDenom);
     el.speedBtn.addEventListener("click", cycleSpeed);
     el.menuBtn.addEventListener("click", () => { syncOptions(); openOverlay(el.optionsOverlay); });
-    el.optionsBtn.addEventListener("click", () => openOverlay(el.menuOverlay));
+    el.helpBtn.addEventListener("click", () => openOverlay(el.menuOverlay));
 
     el.hand.addEventListener("click", (e) => { const card = e.target.closest(".card"); if (!card) return; const i = +card.dataset.i; if (S.phase === "dealt") toggleHold(i); else if (S.phase === "double") pickDouble(i); });
 
@@ -788,6 +790,8 @@
       else if (k === "enter" || k === " ") { e.preventDefault(); if (S.phase === "ready") deal(); else if (S.phase === "dealt") draw(); else if (S.phase === "result") takeWin(); }
       else if (k === "d") { if (S.phase === "result") startDouble(); }
       else if (k === "m") { toggleMute(); }
+      else if (k === "h") { openOverlay(el.menuOverlay); }
+      else if (k === "g") { syncOptions(); openOverlay(el.optionsOverlay); }
     });
   }
 
