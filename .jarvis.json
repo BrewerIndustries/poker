@@ -1,7 +1,9 @@
 {
   "id": "poker",
   "name": "Jarvis Poker",
+  "description": "An IGT 'Game King'-style bar-top video poker machine with five classic variants, hold/draw play, a Double-Up gamble, and a glowing CRT cabinet.",
   "category": "games",
+  "tech": ["Vanilla JS", "CSS", "Web Audio API", "localStorage", "single-file HTML", "GitHub Pages"],
   "status": { "prod": "live", "dev": "live" },
   "deploy": {
     "prod": { "url": "https://poker.dabrewer.dev/" },
