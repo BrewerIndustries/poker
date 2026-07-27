@@ -297,6 +297,7 @@
     <div class="footer">Jarvis Poker · <span id="ver">v0.5</span> · <a href="https://poker.dabrewer.dev/" target="_blank" rel="noopener">poker.dabrewer.dev</a></div>
   </main>
 
+<script src="https://arcade.dabrewer.dev/arcade-sdk.js" data-game="poker"></script>
 <script>
 "use strict";
 /* =======================================================================
@@ -479,6 +480,7 @@
   // --- Persistence ------------------------------------------------------
   function save() {
     try { localStorage.setItem(SAVE_KEY, JSON.stringify({ credits: S.credits, bet: S.bet, hands: S.hands, biggestWin: S.biggestWin, muted: S.muted, denomIdx: S.denomIdx, speedIdx: S.speedIdx, gameIdx: S.gameIdx, handCount: S.handCount })); } catch (e) {}
+    if (window.Arcade) { Arcade.report('credits', S.credits); Arcade.report('biggest_win', S.biggestWin); }
   }
   function load() {
     try {
